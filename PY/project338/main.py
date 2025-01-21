@@ -13,6 +13,9 @@ pygame.display.set_caption('Machinki')
 font = pygame.font.Font(None, 36)
 
 road_images = pygame.transform.scale(pygame.image.load(f"{os.path.dirname(__file__)}/background_machinki.png"), (screen_x, screen_y)) # загрузка заднего фона
+player_car = pygame.transform.scale(pygame.image.load(f'{os.path.dirname(__file__)}/cars/car1.png'), (50, 100))
+bot_car = pygame.transform.rotate(pygame.transform.scale(pygame.image.load(f'{os.path.dirname(__file__)}/cars/car2.png'), (50, 100)), 180)
+bot_car1 = pygame.transform.rotate(pygame.transform.scale(pygame.image.load(f'{os.path.dirname(__file__)}/cars/car3.png'), (50, 100)), 180)
 
 player_x = 700 # начальные корды игрока 
 player_y = 500
@@ -28,6 +31,8 @@ anim = False # фалсе - в ожидании нажатия клавиши д
 rand_lane = random.randint(0,1) # рандомайзер полосы бота
 rand_color = 200 # цвет бота - меняется каждое прохождение пути 
 colors = ['red', 'blue', 'green', 'gray']
+sprite_bots = ['bot_car', 'bot_car1']
+rand_bot = random.choice(sprite_bots)
 
 while game:
     for event in pygame.event.get():
@@ -44,6 +49,7 @@ while game:
           
     if anim == True: # проверка прожатой клавиши
         if bot_y >= bot_target: # возврат бота наверх и рандомная смена полосы
+            rand_bot = random.choice(sprite_bots)
             rand_lane = random.randint(0,1)
             rand_color = random.choice(colors)  #random.randint(100, 200)
             score += 1
@@ -83,8 +89,11 @@ while game:
 
     player = pygame.Rect(player_x, player_y, 50, 100) # параметры игрока и бота
     bot1 = pygame.Rect(bot_x, bot_y, 50, 100 )
-    pygame.draw.rect(screen, rand_color, bot1, 10) # отрисовка бота
-    pygame.draw.rect(screen, (255, 0, 0), player, 10) # отрисовка игрока
+    screen.blit(player_car, (player_x, player_y))
+    if rand_bot == 'bot_car1':
+        screen.blit(bot_car1, (bot_x, bot_y))
+    elif rand_bot == 'bot_car':
+        screen.blit(bot_car, (bot_x, bot_y))
                 
     pygame.display.flip()
     clock.tick(60)
