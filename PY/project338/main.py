@@ -60,7 +60,7 @@ while game:
             rand_bot = random.choice(sprite_bots) # рандомайзер спрайта бота(тут потому что меняется каждый новый цикл перемещения)
             rand_lane = random.randint(0,1) # рандомайзер полосы бота
             score += 1 # +1 к очкам если бот проехал не задев игрока
-            bot_y = 0 # перемещение бота на исходную
+            bot_y = -100 # перемещение бота на исходную
             if speed <= 18: speed += 1 # ограничение скорости(до 18)
             if rand_lane == 0: # перемещение бота по полосам
                 bot_x = 550
@@ -73,10 +73,10 @@ while game:
 
 
     if bot_y == player_y - 100 or bot_y in range(400, 610): # проверка столкновения с ботом 1
-        rand_lane = random.randint(0,1) # рандомайзер полосы бота
-        rand_bot = random.choice(sprite_bots) # рандомайзер спрайта бота(тут потому что меняется каждый новый цикл перемещения)
-        
         if pos == 'right' and bot_x == 700: # вот такая костыльная пародия на колизию(надо будет сделать через rect кншн)
+            rand_lane = random.randint(0,1) # рандомайзер полосы бота
+            rand_bot = random.choice(sprite_bots) # рандомайзер спрайта бота(тут потому что меняется каждый новый цикл перемещения)
+            
             if score != 0: score -= 1 # ограничение снижения score
             health -= 1
             bot_y = 10
@@ -85,6 +85,9 @@ while game:
             elif rand_lane == 1: 
                 bot_x = 700
         elif pos == 'left' and bot_x == 550: 
+            rand_lane = random.randint(0,1) # рандомайзер полосы бота
+            rand_bot = random.choice(sprite_bots) # рандомайзер спрайта бота(тут потому что меняется каждый новый цикл перемещения)
+            
             if score != 0: score -= 1
             health -= 1
             bot_y = 10
@@ -111,7 +114,7 @@ while game:
     
     if health <= 0: # инструкции при так называемой смерти
         screen.fill('black')
-        screen.blit(sprite_health, (screen_x // 2, screen_y // 2))
+        screen.blit(sprite_health, (player_x - 100, player_y - 100))
 
     pygame.display.flip()
     clock.tick(60) # ограничение на 60 фпс
