@@ -1,16 +1,14 @@
-import pygame
-import os
-import time
-import random
+import pygame, os, random
 
 pygame.init()
 
+# переменныые под экран и шрифт
 screen_x = 1300
 screen_y = 700
 screen = pygame.display.set_mode((screen_x, screen_y))
 pygame.display.set_caption('Machinki')
-
 font = pygame.font.Font(None, 36)
+
 # подгрузка текстур
 road_images = pygame.transform.scale(pygame.image.load(f"{os.path.dirname(__file__)}/background_machinki.png"), (screen_x, screen_y)) # загрузка заднего фона
 player_car = pygame.transform.scale(pygame.image.load(f'{os.path.dirname(__file__)}/cars/car1.png'), (50, 100))
@@ -40,7 +38,7 @@ health = 3
 
 # вспомогательные переменные
 game = True # проверка выхода
-clock = pygame.time.Clock() # хуй пойми надо для ограничения фпс и анимации типо но чет я не пон как мне это использовать(
+clock = pygame.time.Clock() # использую для ограничения фпс
 anim = False # фалсе - в ожидании нажатия клавиши для запуска игры
 
 
@@ -116,7 +114,7 @@ while game:
         screen.blit(sprite_health, (screen_x // 2, screen_y // 2))
 
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(60) # ограничение на 60 фпс
     
     
     
