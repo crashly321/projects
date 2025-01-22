@@ -13,6 +13,8 @@ pygame.display.set_caption(settings.window_name)
 game = True
 clock = pygame.time.Clock()
 
+game_score = 0
+
 '''
 Делаю 3 класса:
     1 - пушка, в виде ровного треугольника из середины будет вылетать снаряд
@@ -21,6 +23,7 @@ clock = pygame.time.Clock()
     3 - цель, движущийся прямоугольник, так же скорость, должна ездить в пределах окошка
         (мб изменить скорость на минусовую при достижении screen_x), при попадании становится красной и прибавляет score
 Фон звездный какой нибудь в инете высрать
+
 '''
 background = pygame.image.load(f'{os.path.dirname(__file__)}/star_back.jpg')
 font = pygame.font.Font(None, 36)
@@ -75,14 +78,24 @@ class space_bot(object):
         self.gun = None
         self.strike = 0
 
+        self.tag = "player"
         self.collider = pygame.Rect(self.posX, self.posY, 50, 100)
 
     def update(self, deltaTime):
-        self.botposY = objects[1].posY
-        self.botposX = objects[1].posX
+        global game_score
+
+        if len(objects) > 1:
+            self.botposY = objects[1].posY
+            self.botposX = objects[1].posX
 
         self.collider.left = self.posX
         self.collider.top = self.posY
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a] and self.posX >= 0:
+            self.posX -= 10
+        elif keys[pygame.K_d] and self.posX <= settings.screen_x - 50:
+            self.posX += 10
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT and self.posX >= 0:
@@ -99,7 +112,7 @@ class space_bot(object):
             if self.gun.posY == self.botposY - 100 and self.gun.posX in range(self.botposX - 25, self.botposX + 25):
                 objects.remove(self)
                 objects[0].gun = None
-                self.score += 1
+                game_score += 1
                 print('suda')
 
 
@@ -113,13 +126,13 @@ class animals(object):
         self.sprite_bot = pygame.transform.rotate(self.sprite_bot, 180)
         self.posY = 10
         self.posX = 290
-        self.score = 0
         self.tag = "animals"
 
         self.collider = pygame.Rect(self.posX, self.posY, 50, 100)
 
     def update(self, deltaTime):
-        playerposX = objects[0].posX
+        global game_score
+
         self.collider.left = self.posX
         self.collider.top = self.posY
 
@@ -139,23 +152,24 @@ class animals(object):
         if self.check_collider(objects[0].collider):
             self.posY = 3
             self.posX = random.randint(10, 600)
-            self.score -= 1
+            game_score -= 1
             print('stolk', self.posY)
-        '''
-        if self.check_collider(objects[2].collider): # вот тут пиздец
+
+        all_bullet = list(filter(lambda x: x.tag == "gun", objects))
+        
+        if all_bullet and self.check_collider(all_bullet[0].collider):
             objects.remove(self)
             objects[0].gun = None
-            self.score += 1
+            game_score += 1
             print('suda')
-        '''
-        
+
     def draw(self):
         screen.blit(self.sprite_bot, (self.posX, self.posY))
         pygame.draw.rect(screen, (250, 0, 0), self.collider, 10)
         
 
-objects.append(space_bot())
-objects.append(animals())
+objects.append(space_bot()) # Player
+objects.append(animals()) # Bot
 
 last_time = pygame.time.get_ticks() 
 
@@ -177,7 +191,7 @@ while game:
         obj.update(last_time)
         obj.draw()
 
-    text = font.render(str(f'Score = {objects[1].score}'), True, 'red')
+    text = font.render(str(f'Score = {game_score}'), True, 'red')
     screen.blit(text, (50, 400))
 
     pygame.display.flip()

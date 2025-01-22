@@ -9,12 +9,19 @@ screen = pygame.display.set_mode((screen_x, screen_y))
 pygame.display.set_caption('Machinki')
 font = pygame.font.Font(None, 36)
 
+# звуки
+back_sound = pygame.mixer.Sound(f"{os.path.dirname(__file__)}/back_sound.wav")
+pygame.mixer.music.load(f"{os.path.dirname(__file__)}/back_sound.wav")
+pygame.mixer.music.play(-1)
+crash_sound = pygame.mixer.Sound(f"{os.path.dirname(__file__)}/crash.wav")
+
 # подгрузка текстур
 road_images = pygame.transform.scale(pygame.image.load(f"{os.path.dirname(__file__)}/background_machinki.png"), (screen_x, screen_y)) # загрузка заднего фона
 player_car = pygame.transform.scale(pygame.image.load(f'{os.path.dirname(__file__)}/cars/car1.png'), (50, 100))
 bot_car = pygame.transform.rotate(pygame.transform.scale(pygame.image.load(f'{os.path.dirname(__file__)}/cars/car2.png'), (50, 100)), 180)
 bot_car1 = pygame.transform.rotate(pygame.transform.scale(pygame.image.load(f'{os.path.dirname(__file__)}/cars/car3.png'), (50, 100)), 180)
-sprite_health = pygame.transform.scale(pygame.image.load(f'{os.path.dirname(__file__)}/sprite_health.png'), (300, 300))
+#sprite_health = pygame.transform.scale(pygame.image.load(f'{os.path.dirname(__file__)}/sprite_health.png'), (300, 300))
+sprite_health = pygame.transform.scale(pygame.image.load(f'{os.path.dirname(__file__)}/ban.jpg'), (1300, 700))
 # в этом блоке загружается картинка изменяется размер и переворачивается в случае спрайтов бота
 
 # позиционные переменные
@@ -114,7 +121,9 @@ while game:
     
     if health <= 0: # инструкции при так называемой смерти
         screen.fill('black')
-        screen.blit(sprite_health, (player_x - 100, player_y - 100))
+        screen.blit(sprite_health, (0, 0))
+        pygame.mixer.Sound.play(crash_sound)
+        pygame.mixer.music.play(0)
 
     pygame.display.flip()
     clock.tick(60) # ограничение на 60 фпс
