@@ -32,6 +32,10 @@ def start(message): # основная менюшка с командами
             listing += f'Пользователь @{user}:\nИмя: {users[user]['имя']}, Фамилия: {users[user]['фамилия']}, Возраст: {users[user]['возраст']}\n\n'
         bot.send_message(message.from_user.id, listing)
         bot.send_message(message.from_user.id, 'Хотите изменить список?')
+        bot.send_message(message.from_user.id, users_list.admins)
+    elif message.text == '/add_admin' and message.from_user.id in users_list.admins:
+        bot.send_message(message.from_user.id, 'Введите айди пользователя для добавления в список модерации:')
+        bot.register_next_step_handler(message, add_admin)
 
 
 def name(message): # метод получает имя
@@ -71,6 +75,12 @@ def choice_save(message): # метод выбирает сохранить ил�
         bot.send_message(message.from_user.id, 'Отменено...')
         bot.register_next_step_handler(message, start)
 
-
+def add_admin(message):
+    new_admin = message.text
+    print(new_admin)
+    users_list.admins.append(int(new_admin))
+    print(users_list.admins)
+    bot.send_message(message.from_user.id, new_admin)
+    
 
 bot.polling(none_stop=True, interval=0)
