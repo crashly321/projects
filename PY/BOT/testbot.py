@@ -2,7 +2,7 @@ import telebot
 import webbrowser
 
 import users_list
-import registration
+
 
 '''
 python3 /Users/cryashly/Documents/gitRepositories/Codein/projects/PY/BOT/testbot.py
@@ -23,7 +23,7 @@ def start(message): # основная менюшка с командами
                 bot.send_message(message.from_user.id, 'Список команд для МОДЕРАТОРА!!!\n/list - список пользователей\n/user_del - удалить пользователя\n/add_admin - добавить пользователя в админ панель')
         case '/reg':
             bot.send_message(message.from_user.id, 'Регаем нового юзера, мне понадобится Имя, Фамилия и возраст!\nКак вас зовут?')
-            bot.register_next_step_handler(message, registration.name)
+            bot.register_next_step_handler(message, name)
         case '/id':
             bot.send_message(message.from_user.id, f'ID - {message.from_user.id}')
             print(f'\nЗапросили айди {message.from_user.username}\n')
@@ -44,7 +44,7 @@ def start(message): # основная менюшка с командами
         bot.send_message(message.from_user.id, 'Введите айди пользователя для добавления в список модерации:')
         bot.register_next_step_handler(message, add_admin)
 
-'''
+
 def name(message): # метод получает имя
     global nameus
     nameus = message.text
@@ -64,7 +64,7 @@ def age(message): # метод получает возраст
 
     bot.send_message(message.from_user.id, f'Отлично, ваши данные:\n\nИмя : {nameus}, Фамилия : {sur_nameus}, Возраст : {ageus}\n\nДля сохранения напишите - "Сохраняю", для отмены - "Отмена"')
     bot.register_next_step_handler(message, choice_save)
-def choice_save(message): # метод выбирает сохранить или отменить
+def choice_save(message): # метод выбирает сохранить или отменить регистрацию
     global choice
     message.from_user.username
     choice = message.text.lower()
@@ -78,23 +78,11 @@ def choice_save(message): # метод выбирает сохранить ил�
     elif choice not in ['сохраняю', 'отмена']:
         bot.send_message(message.from_user.id, 'Отменено...')
         bot.register_next_step_handler(message, start)
-'''
-def add_admin(message):
+
+def add_admin(message): # добавление нового адмена
     new_admin = message.text
     users_list.admins.append(int(new_admin))
     bot.send_message(message.from_user.id, f'Новая ячейка привелигированного общества: {new_admin}')
     bot.register_next_step_handler(message, start)
     
-'''
-if input() == '/listing':
-    listing = 'Пользователи:\n'
-    admin_list = 'МОДЕРАТОРЫ!\n'
-    for user in users:
-        listing += f'Пользователь @{user}:\nИмя: {users[user]['имя']}, Фамилия: {users[user]['фамилия']}, Возраст: {users[user]['возраст']}\n\n'
-    for i in users_list.admins:
-        admin_list += f'ID - {i}\n'
-    print(f'{listing}\n\n{admin_list}')
-'''
-
-
-bot.polling(none_stop=True, interval=0)
+bot.polling(none_stop=True)
