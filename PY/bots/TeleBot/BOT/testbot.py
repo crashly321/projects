@@ -1,15 +1,14 @@
 import telebot
 import webbrowser
-
 import users_list
-
-
-'''
-python3 /Users/cryashly/Documents/gitRepositories/Codein/projects/PY/BOT/testbot.py
-'''
 
 bot = telebot.TeleBot('7575636058:AAGYv7xtuCrY6hR2KS-uq4J5wI68AphgeEQ')
 users = users_list.user_list
+
+
+@bot.message_handler(content_type=['image'])
+def echo(message):
+	bot.send_message(message.chat.id, 're')
 
 @bot.message_handler(content_types=['text'])
 def start(message): # основная менюшка с командами
