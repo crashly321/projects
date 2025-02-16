@@ -5,3 +5,8 @@ class reg_user(StatesGroup):
 	number = State()
 	location = State()
 	accept = State()
+	city_accept = State()
+
+class find_service(StatesGroup):
+	set_device = State()
+	

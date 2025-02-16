@@ -26,7 +26,8 @@ give_location = ReplyKeyboardMarkup(keyboard=[
 resize_keyboard=True, input_field_placeholder='Где вы живете?', one_time_keyboard=True)
 
 give_accept = ReplyKeyboardMarkup(keyboard=[
-    [KeyboardButton(text='Подтверждаю'), KeyboardButton(text='Отмена')]
+    [KeyboardButton(text='Подтверждаю'), KeyboardButton(text='Отмена')],
+    [KeyboardButton(text='Указать город самостоятельно')]
 ],
 resize_keyboard=True, input_field_placeholder='Выберите пункт...', one_time_keyboard=True)
 
@@ -37,3 +38,4 @@ privacy_keyboard_check = InlineKeyboardMarkup(inline_keyboard=[
 privacy_keyboard_check_back = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text='К регистрации', callback_data='check_privacy_back')]
 ])
+#
