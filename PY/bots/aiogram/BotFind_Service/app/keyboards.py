@@ -13,7 +13,7 @@ main_keyboard = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text='О нас'), KeyboardButton(text='Контакты')],
     [KeyboardButton(text='Работать с нами')]
 ],
-resize_keyboard=True, input_field_placeholder='Выберите пункт...', one_time_keyboard=True)
+resize_keyboard=True, input_field_placeholder='Выберите пункт...')
 
 give_contact = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text='Поделиться номером...', request_contact=True)]
